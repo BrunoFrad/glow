@@ -17,6 +17,7 @@
 
 // C++ STD includes
 #include <iostream>
+#include <vector>
 
 namespace GLOW {
 
@@ -48,8 +49,36 @@ namespace GLOW {
         void setColor(const Color& color);
     };
 
+    class Mesh {
+    private:
+
+        unsigned int vertexShader{};
+        unsigned int fragmentShader{};
+
+    protected:
+        unsigned int VAO{};
+        unsigned int shaderProgram{};
+        unsigned int VBO{};
+        std::vector<float> vertices;
+
+    public:
+        Mesh(const std::vector<float>& vertices, const char* vertexSrc, const char* fragmentSrc);
+        void setBuffersData();
+        void loadVertexShader(const char* vertexSrc);
+        void loadFragmentShader(const char* fragmentSrc);
+        void createShaderProgram();
+        virtual void draw();
+        virtual ~Mesh();
+    };
+
+    class Triangle : public Mesh {
+    public:
+        Triangle(float width, float height, const char * vertexSrc, const char * fragmentSrc);
+        void draw() override;
+    };
+
     namespace Core {
-        void runMainLoop(Window& window);
+        void runMainLoop(Window& window, std::vector<Mesh*>& meshes);
 
         void exit();
 

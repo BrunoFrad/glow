@@ -11,6 +11,8 @@ add_executable(glow
         engine/glow_init.cpp
         engine/glow_window.cpp
         engine/glow_core.cpp
+        engine/glow_Mesh.cpp
+        engine/glow_triangle.cpp
 )
 
 target_link_libraries(glow PRIVATE
