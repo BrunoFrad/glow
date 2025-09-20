@@ -1,13 +1,16 @@
 cmake_minimum_required(VERSION 4.0)
-project(glow)
+project(engine)
 
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(glow
         main.cpp
         glad.c
-        glow.hpp
-        glow.cpp
+        engine/glow.hpp
+        engine/glow.cpp
+        engine/glow_init.cpp
+        engine/glow_window.cpp
+        engine/glow_core.cpp
 )
 
 target_link_libraries(glow PRIVATE

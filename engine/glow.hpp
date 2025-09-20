@@ -37,7 +37,7 @@ namespace GLOW {
         GLFWwindow* window;
         Color color = {0.0f, 0.0f, 0.0f, 1.0f};
     public:
-        Window(const int width, const int height, const std::string& title);
+        Window(int width, int height, const std::string& title);
 
         ~Window();
 
