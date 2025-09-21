@@ -1,8 +1,16 @@
+/*
+=============================================================================================
+
+                            OpenGL on Windows Engine Main Source File
+
+                                    by : Bruno Frade
+                                    date : 19/09/2025
+
+==============================================================================================
+*/
+
+
 #include "engine/glow.hpp"
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <vector>
 
 int main() {
     try {
@@ -13,42 +21,21 @@ int main() {
 
         GLOW::Init::GLAD(); // init GLAD
 
-        // --- Vertex Shader ---
-        std::ifstream vertexShaderFile("../engine/shaders/basic/vertex.txt");
-        if (!vertexShaderFile.is_open()) {
-            std::cerr << "Failed to open the vertex shader!" << std::endl;
-            return 1;
-        }
+        GLOW::Shader shader_orange("../engine/shaders/basic/vertex.txt", "../engine/shaders/basic/fragment.txt");
+        GLOW::Shader shader_yellow("../engine/shaders/basic/vertex.txt", "../engine/shaders/basic/fragment_yellow.txt");
 
-        std::stringstream vertexBuffer;
-        vertexBuffer << vertexShaderFile.rdbuf();
-        std::string vertexShaderString = vertexBuffer.str();
-        const char* vertexShaderSource = vertexShaderString.c_str();
-        vertexShaderFile.close();
-
-        // --- Fragment Shader ---
-        std::ifstream fragmentShaderFile("../engine/shaders/basic/fragment.txt");
-        if (!fragmentShaderFile.is_open()) {
-            std::cerr << "Failed to open the fragment shader!" << std::endl;
-            return 1;
-        }
-
-        std::stringstream fragmentBuffer;
-        fragmentBuffer << fragmentShaderFile.rdbuf();
-        std::string fragmentShaderString = fragmentBuffer.str();
-        const char* fragmentShaderSource = fragmentShaderString.c_str();
-        fragmentShaderFile.close();
-
-        auto mesh = GLOW::Triangle(0.3, 0.4, vertexShaderSource, fragmentShaderSource);
+        auto mesh = GLOW::Triangle(-0.6f, 0, 0.3f, 0.4f, shader_orange ,GL_STATIC_DRAW);
+        auto mesh2 = GLOW::Triangle(0.6f, 0, 0.3f, 0.4f, shader_yellow, GL_STATIC_DRAW);
         std::vector<GLOW::Mesh*> meshes;
         meshes.push_back(&mesh);
+        meshes.push_back(&mesh2);
 
         GLOW::Core::runMainLoop(window, meshes); // Main Loop
-
-        GLOW::Core::exit();
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
     }
+
+    GLOW::Core::exit();
 
     return 0;
 }

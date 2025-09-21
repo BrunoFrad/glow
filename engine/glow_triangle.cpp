@@ -11,12 +11,10 @@
 
 #include "glow.hpp"
 
-GLOW::Triangle::Triangle(float width, float height, const char *vertexSrc, const char *fragmentSrc) : Mesh({-width, -height, 0.f, width, -height, 0.f, 0.f, height, 0.f}, vertexSrc, fragmentSrc){
-
-}
+GLOW::Triangle::Triangle(float x, float y, float width, float height, Shader& shader, const long mode) : Mesh({-width+x, -height, 0.f, width+x, -height, 0.f, x, height, 0.f}, shader, mode){}
 
 void GLOW::Triangle::draw() {
-    glUseProgram(shaderProgram);
+    this->shader.use();
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0);

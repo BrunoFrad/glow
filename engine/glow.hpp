@@ -18,6 +18,8 @@
 // C++ STD includes
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <sstream>
 
 namespace GLOW {
 
@@ -49,31 +51,39 @@ namespace GLOW {
         void setColor(const Color& color);
     };
 
+    class Shader {
+    protected:
+        unsigned int shaderProgram;
+        unsigned int vertexShader;
+        unsigned int fragmentShader;
+
+        void loadVertexShader(const char* vertexSrc);
+        void loadFragmentShader(const char* fragmentSrc);
+        void createShaderProgram();
+
+    public:
+        Shader(const char* vertexPath, const char* fragmentPath);
+        void use();
+        ~Shader();
+    };
+
     class Mesh {
-    private:
-
-        unsigned int vertexShader{};
-        unsigned int fragmentShader{};
-
     protected:
         unsigned int VAO{};
-        unsigned int shaderProgram{};
+        Shader& shader;
         unsigned int VBO{};
         std::vector<float> vertices;
 
     public:
-        Mesh(const std::vector<float>& vertices, const char* vertexSrc, const char* fragmentSrc);
-        void setBuffersData();
-        void loadVertexShader(const char* vertexSrc);
-        void loadFragmentShader(const char* fragmentSrc);
-        void createShaderProgram();
+        Mesh(const std::vector<float>& vertices, Shader& shader, long mode);
+        void setBuffersData(long mode);
         virtual void draw();
         virtual ~Mesh();
     };
 
     class Triangle : public Mesh {
     public:
-        Triangle(float width, float height, const char * vertexSrc, const char * fragmentSrc);
+        Triangle(float x, float y, float width, float height, Shader& shader, long mode);
         void draw() override;
     };
 
